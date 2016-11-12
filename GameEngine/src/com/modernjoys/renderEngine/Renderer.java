@@ -20,7 +20,7 @@ public class Renderer
 		// activate the attribute list where our data is stored
 		GL20.glEnableVertexAttribArray(0);
 	
-		
+		// this command is guided by the ShaderProgram's 'start()' method so the verticies in the VAO are copied over to the ShaderProgram's vertex shader for manipulation
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		
 		

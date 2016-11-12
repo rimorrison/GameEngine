@@ -6,6 +6,7 @@ import com.modernjoys.renderEngine.DisplayManager;
 import com.modernjoys.renderEngine.Loader;
 import com.modernjoys.renderEngine.RawModel;
 import com.modernjoys.renderEngine.Renderer;
+import com.modernjoys.shaders.StaticShader;
 
 public class MainGameLoop 
 {
@@ -18,14 +19,16 @@ public class MainGameLoop
 		
 
 		// open a display
-		DisplayManager.createDisplay();
-		
+		DisplayManager.createDisplay();		
 		
 		// Loader is used to load an object into a VAO
 		Loader loader = new Loader();
 		
 		// Render actually displays the object on the display
 		Renderer renderer = new Renderer();
+		
+		// this build a shader program object that stores the vertex and fragment shader codes to apply to vertices
+		StaticShader shader = new StaticShader();
 		
 		
 	/*	float[] verticies = {			
@@ -86,11 +89,14 @@ public class MainGameLoop
 		{
 			
 			renderer.prepare();
+			shader.start();
 			renderer.render(model);
+			shader.stop();
 			DisplayManager.updateDisplay();
 
 		}
 		
+		shader.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
