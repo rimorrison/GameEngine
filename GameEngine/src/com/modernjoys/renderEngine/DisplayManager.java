@@ -1,5 +1,6 @@
 package com.modernjoys.renderEngine;
 
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
@@ -32,6 +33,7 @@ public class DisplayManager
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat(), attribs);
 			Display.setTitle("Richard's first 3d game");
+			
 			// Display.setInitialBackground(0, 0, 1);
 		}
 		catch (LWJGLException e)

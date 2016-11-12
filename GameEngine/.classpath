@@ -10,5 +10,9 @@
 	<classpathentry kind="lib" path="lib/jars/lwjgl.jar"/>
 	<classpathentry kind="lib" path="lib/jars/PNGDecoder.jar"/>
 	<classpathentry kind="lib" path="lib/jars/slick-util.jar"/>
+	<classpathentry kind="lib" path="lib/jars/lwjgl-glfw-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/jars/lwjgl-glfw.jar"/>
+	<classpathentry kind="lib" path="lib/jars/lwjgl-javadoc.jar"/>
+	<classpathentry kind="lib" path="/CanyonBunny-desktop/libs/gdx-backend-lwjgl.jar" sourcepath="/CanyonBunny-desktop/libs/gdx-backend-lwjgl-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
