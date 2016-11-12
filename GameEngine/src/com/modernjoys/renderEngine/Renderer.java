@@ -21,7 +21,7 @@ public class Renderer
 		GL20.glEnableVertexAttribArray(0);
 	
 		
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, model.getVertexCount());
+		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		
 		
 		// once finished rendering we have to disable the VAO intex and unbind from the VAO
