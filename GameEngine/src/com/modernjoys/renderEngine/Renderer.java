@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import com.modernjoys.models.RawModel;
+
 public class Renderer 
 {
 	
@@ -16,6 +18,7 @@ public class Renderer
 	
 	public void render(RawModel model)
 	{
+		// makes the VAO editable
 		GL30.glBindVertexArray(model.getVaoID());
 		// activate the attribute list where our data is stored
 		GL20.glEnableVertexAttribArray(0);
@@ -24,7 +27,7 @@ public class Renderer
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		
 		
-		// once finished rendering we have to disable the VAO intex and unbind from the VAO
+		// once finished rendering we have to disable the VAO index and unbind from the VAO
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 		

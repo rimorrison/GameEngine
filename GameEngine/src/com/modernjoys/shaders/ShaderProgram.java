@@ -9,25 +9,28 @@ import org.lwjgl.opengl.GL20;
 
 public abstract class ShaderProgram {
 	
-	private int programID;
-	private int vertexShaderID;
-	private int fragmentShaderID;
+	private int m_programID;
+	private int m_vertexShaderID;
+	private int m_fragmentShaderID;
 	
 	public ShaderProgram(String vertexFile, String fragmentFile)
 	{
-		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
-		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
-		programID = GL20.glCreateProgram();
-		GL20.glAttachShader(programID,  vertexShaderID);;
-		GL20.glAttachShader(programID, fragmentShaderID);
+		m_vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
+		m_fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+		m_programID = GL20.glCreateProgram();
+		GL20.glAttachShader(m_programID,  m_vertexShaderID);;
+		GL20.glAttachShader(m_programID, m_fragmentShaderID);
+		
+		// connects a VAO to the shader program variable
 		bindAttributes();
-		GL20.glLinkProgram(programID);
-		GL20.glValidateProgram(programID);
+		
+		GL20.glLinkProgram(m_programID);
+		GL20.glValidateProgram(m_programID);
 	}
 	
 	public void start()
 	{
-		GL20.glUseProgram(programID);
+		GL20.glUseProgram(m_programID);
 	}
 	
 	public void stop()
@@ -38,11 +41,11 @@ public abstract class ShaderProgram {
 	public void cleanUp()
 	{
 		stop();
-		GL20.glDetachShader(programID, vertexShaderID);
-		GL20.glDetachShader(programID, fragmentShaderID);
-		GL20.glDeleteShader(vertexShaderID);
-		GL20.glDeleteShader(fragmentShaderID);
-		GL20.glDeleteProgram(programID);
+		GL20.glDetachShader(m_programID, m_vertexShaderID);
+		GL20.glDetachShader(m_programID, m_fragmentShaderID);
+		GL20.glDeleteShader(m_vertexShaderID);
+		GL20.glDeleteShader(m_fragmentShaderID);
+		GL20.glDeleteProgram(m_programID);
 	}
 	
 	
@@ -51,7 +54,7 @@ public abstract class ShaderProgram {
 	protected void bindAttribute(int attribute, String variableName)
 	// attribute is the index location of the VAO variable name is the 'IN' field of the vertex shader example - "Position" variable
 	{
-		GL20.glBindAttribLocation(programID, attribute, variableName);
+		GL20.glBindAttribLocation(m_programID, attribute, variableName);
 	}
 	
 	private static int loadShader(String file, int type) 

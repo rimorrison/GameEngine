@@ -14,7 +14,7 @@ public class DisplayManager
 {
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	private static final Dimension dimension = new Dimension(WIDTH, HEIGHT);
+	// private static final Dimension dimension = new Dimension(WIDTH, HEIGHT);
 	private static final int FPS_CAP = 120;
 	
 	private static long lastFrameTime;
@@ -41,8 +41,8 @@ public class DisplayManager
 			e.printStackTrace();
 		}
 		
-		// Tell the OpenGL to render the display in the whole display
-		// We want whole display from bottom left to top right (buttom left (0, 0), top hight(width, height)
+		// Tells OpenGL to render using the whole display
+		// We want the whole display from bottom left to top right (bottom left (0, 0), top hight(width, height)
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		lastFrameTime = getCurrentTime();
 	}
@@ -51,7 +51,9 @@ public class DisplayManager
 	{
 		// this sets the rate of the updates to the display refresh rate - FPS_CAP is set to 120
 		Display.sync(FPS_CAP);
-		Display.update();
+		
+		// Update the window. If the window is visible clears the dirty flag and calls swapBuffers() and finally polls the input devices if processMessages is true.
+		Display.update(true);
 		
 		//long currentFrameTime = getCurrentTime();
 		//delta = (currentFrameTime - lastFrameTime) / 1000f;

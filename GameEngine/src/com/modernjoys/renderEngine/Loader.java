@@ -1,5 +1,8 @@
 package com.modernjoys.renderEngine;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -10,31 +13,58 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
+import com.modernjoys.models.RawModel;
 
 public class Loader {
 	
-	private List<Integer> vaos = new ArrayList<Integer>();
-	private List<Integer> vbos = new ArrayList<Integer>();
+	private List<Integer> m_vaos = new ArrayList<Integer>();
+	private List<Integer> m_vbos = new ArrayList<Integer>();
+	private List<Integer> m_textures = new ArrayList<Integer>();
 	
 	public RawModel loadToVAO(float[] positions, int[] indices) 
 	{
 		int vaoID = createVAO();
-		vaos.add(vaoID);
+		m_vaos.add(vaoID);
 		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, positions);
 		
 		unbindVAO();
 		
-		// not it take 3 points (x, y, z) to make 1 vertices so we divide by 3 to get the right vertex count
+		// note it takes 3 points (x, y, z) to make 1 vertices so we divide by 3 to get the right vertex count when using positions but when using indicies this is not necessary
 		return new RawModel(vaoID, indices.length);
 		
 	}
 	
+	
+	public int loadTexture(String fileName)
+	{
+		Texture texture = null;
+		try {
+			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" +fileName+ ".png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int textureID = texture.getTextureID();
+		m_textures.add(textureID);
+		return textureID;
+	}
+	
+	
+	
+	
 	private int createVAO()
 	{
-		// this actually creates a VAO and stores its ID into the vaoID
+		// this actually creates a VAO and stores its ID into the vaoID variable
 		int vaoID = GL30.glGenVertexArrays();
-		// Bind the VAO
+		// Binding the VAO make the current VAO editable
 		GL30.glBindVertexArray(vaoID);
 		return vaoID;
 		
@@ -45,7 +75,7 @@ public class Loader {
 		// actually creates a VBO and stores its id in vboID
 		int vboID = GL15.glGenBuffers();
 		
-		vbos.add(vboID);
+		m_vbos.add(vboID);
 		// Bind the active VBO for editing
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
 		// convert the float array above to a float buffer
@@ -69,10 +99,14 @@ public class Loader {
 	
 	private void bindIndicesBuffer(int[] indices)
 	{
+		// this actually creates a VBO and stores its ID into the vboID variable
 		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
+		m_vbos.add(vboID);
+		// Binding the VBO makes the current VBO indicies buffer the currently active indices lookup 
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+		// prepares an int buffer and stores an int array (the inices) into this intBuffer
 		IntBuffer buffer = storeDataInIntBuffer(indices);
+		// this actually stores intbuffer data (the indicies) 
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 		
 	}
@@ -97,14 +131,20 @@ public class Loader {
 	}
 	
 	public void cleanUp(){
-		for(Integer vao : vaos)
+		for(Integer vao : m_vaos)
 		{
 			GL30.glDeleteVertexArrays(vao);
 		}
 		
-		for(Integer vbo : vbos)
+		for(Integer vbo : m_vbos)
 		{
 			GL15.glDeleteBuffers(vbo);
+		}
+		
+		for(int texture : m_textures)
+		{
+			// deletes the texture from memory
+			GL11.glDeleteTextures(texture);
 		}
 	}
 

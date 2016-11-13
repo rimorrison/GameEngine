@@ -12,7 +12,7 @@ public class StaticShader extends ShaderProgram{
 
 	@Override
 	protected void bindAttributes() 
-	// this 1st filed is the VAO's first index while the 2nd attribute is the variable in the vertex shader
+	// the 1st field is the VAO's first index while the 2nd attribute is the variable in the vertex shader
 	{
 		super.bindAttribute(0,  "position");
 	}
