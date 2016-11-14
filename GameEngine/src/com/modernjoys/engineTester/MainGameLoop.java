@@ -3,10 +3,12 @@ package com.modernjoys.engineTester;
 import org.lwjgl.opengl.Display;
 
 import com.modernjoys.models.RawModel;
+import com.modernjoys.models.TexturedModel;
 import com.modernjoys.renderEngine.DisplayManager;
 import com.modernjoys.renderEngine.Loader;
 import com.modernjoys.renderEngine.Renderer;
 import com.modernjoys.shaders.StaticShader;
+import com.modernjoys.textures.ModelTexture;
 
 public class MainGameLoop 
 {
@@ -75,13 +77,22 @@ public class MainGameLoop
 
 		};
 		
+		float[] textureCoords = {
+				0.5f, 0.5f, // V0
+				0.5f, 0.8f, // V1
+				0.9f, 0.8f, // V2
+				0.9f, 0.5f // V3
+		};
+		
 		int[] indices = 
 		{
 				0, 1, 3, // Top left triangle (V0, V1, V3)
 				3, 1, 2 // Bottom right triangle (V3, V1, V2)
 		};
 		
-		RawModel model = loader.loadToVAO(verticies, indices);
+		RawModel model = loader.loadToVAO(verticies, textureCoords, indices);
+		ModelTexture texture = new ModelTexture(loader.loadTexture("cathedral")); // loader.loadTexture("image") - returns the ID of the texture that is loaded to memory. So all ModelTexture stores is the ID of the texture
+		TexturedModel texturedModel = new TexturedModel(model, texture);
 
 		while (!Display.isCloseRequested())
 		// this is the game loop - objects are updated every frame and rendering
@@ -94,7 +105,7 @@ public class MainGameLoop
 			// this tells the video card to use the OpenGL shader program while drawing to the screen to override default actions
 			shader.start();
 			// this tells the video card to draw the model to the screen - parts of its action is being over ridden by shader.start()
-			renderer.render(model);
+			renderer.render(texturedModel);
 			// just tells video card to stop using the OpenGL shader program
 			shader.stop();
 			// // Update the window. If the window is visible clears the dirty flag and calls swapBuffers() and finally polls the input devices if processMessages is true.

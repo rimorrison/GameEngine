@@ -1,10 +1,18 @@
 #version 400 core
 
-in vec3 colour;
+// in vec3 colour;
+
+in vec2 pass_textureCoords;
 
 out vec4 out_Color;
 
+uniform sampler2D textureSampler; // this represents the texture we are going to be sampling
+
 void main(void) 
 {
-	out_Color = vec4(colour, 1.0);
+	// out_Color = vec4(colour, 0.0f);
+	
+	// texture() is a GLSL method - it takes texture we want to sample, and the coords of the texture we want to sample
+	// and the method returns the color of the pixel at those coordinates
+	out_Color = texture(textureSampler, pass_textureCoords); 
 }

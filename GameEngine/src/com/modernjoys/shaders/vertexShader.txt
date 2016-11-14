@@ -1,16 +1,23 @@
 #version 400 core
 
+// this is the model's default position in 3D space
 in vec3 position;
+in vec2 textureCoords;
 
-out vec3 colour;
+// out vec3 colour;
+out vec2 pass_textureCoords;
 
-
+uniform mat4 transformationMatrix;
 
 void main(void)
 {
 
 	// tells OpenGL where to render the vertex on the screen
-	gl_Position = vec4(position.x, position.y, position.z, 1.0);
-	colour = vec3(position.x + 0.5, 1.0, position.y + 0.5);
+	// we use a uniforma transformationMatrix to be able to transform our object using Java code
+	gl_Position = transformationMatrix * vec4(position.x, position.y, position.z, 1.0);
+	// colour = vec3(position.x + 0.5, 1.0, position.y + 0.5);
+	pass_textureCoords = textureCoords;
+	
+
 
 }
