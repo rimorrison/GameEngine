@@ -2,7 +2,7 @@
 
 // in vec3 colour;
 
-in vec2 pass_textureCoords;
+in vec2 pass_textureCoordinates;
 
 out vec4 out_Color;
 
@@ -14,5 +14,5 @@ void main(void)
 	
 	// texture() is a GLSL method - it takes texture we want to sample, and the coords of the texture we want to sample
 	// and the method returns the color of the pixel at those coordinates
-	out_Color = texture(textureSampler, pass_textureCoords); 
+	out_Color = texture(textureSampler, pass_textureCoordinates); 
 }

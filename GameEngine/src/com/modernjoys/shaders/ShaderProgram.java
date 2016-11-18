@@ -18,7 +18,7 @@ public abstract class ShaderProgram {
 	private int m_fragmentShaderID;
 	
 	// we need a float buffer to load matrices - since we are using a 4x4 matrices we need 16 floats (16 remember is array.length)
-	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+	private static FloatBuffer m_matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	public ShaderProgram(String vertexFile, String fragmentFile)
 	{
@@ -33,7 +33,12 @@ public abstract class ShaderProgram {
 		
 		GL20.glLinkProgram(m_programID);
 		GL20.glValidateProgram(m_programID);
+		// right when we load up the game we need to get the location of all the uniform variables in the shader code and then store the locations
+		// then we need variables we can call at any time to allow us to modify the uniform variables in the shader.txt file from our Java program on the fly
+		getAllUniformLocations();
 	}
+	
+
 	
 	
 	protected abstract void getAllUniformLocations();
@@ -92,7 +97,7 @@ public abstract class ShaderProgram {
 	
 	
 	// methods to load values to a uniform Location variable in the shader.txt file
-	// takes location of uniform loaction variable and the value we want to load to the uniform
+	// takes location of uniform location variable and the value we want to load to the uniform
 	protected void loadFloat(int location, float value) 
 	{
 		GL20.glUniform1f(location, value);
@@ -114,13 +119,13 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, toLoad);
 	}
 	
-	// this loads a matrix into a uniform varilable in the shader.txt
+	// this loads a matrix into a uniform variable in the shader.txt
 	protected void loadMatrix(int location, Matrix4f matrix) 
 	{
-		matrix.store(matrixBuffer);
-		matrixBuffer.flip();
+		matrix.store(m_matrixBuffer);
+		m_matrixBuffer.flip();
 		// location in the shader.txt whether it needs to be Transposed or not, values (i.e. matrixBuffer data);
-		GL20.glUniformMatrix4(location, false, matrixBuffer);
+		GL20.glUniformMatrix4(location, false, m_matrixBuffer);
 		
 	}
 	
